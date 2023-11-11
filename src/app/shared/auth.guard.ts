@@ -1,7 +1,7 @@
 import {inject} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot} from '@angular/router';
 import {catchError, of, tap} from 'rxjs';
-import {LoginService} from "./login.service";
+import {LoginService} from "../services/login.service";
 import {Constants} from "./constants";
 
 export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {

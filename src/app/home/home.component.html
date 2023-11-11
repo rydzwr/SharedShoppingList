@@ -1,6 +1,50 @@
 <app-header></app-header>
-<p>home works!</p>
-<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-  Test Button
-</button>
 
+<div class="flex flex-col min-h-screen">
+  <!-- User Groups Section with Top Padding and Center Alignment -->
+  <div *ngIf="showForm === 'NO'" class="overflow-auto pt-[6rem] flex-grow">
+    <div class="flex justify-center w-full">
+      <div class="w-full max-w-md p-4">
+        <div class="space-y-2">
+          <button *ngFor="let group of (groupService.userGroups$ | async)" (click)="selectGroup(group)"
+                  class="bg-purple-800 hover:bg-purple-900 text-white font-bold py-3 px-6 rounded-lg w-full transition ease-in-out duration-150">
+            {{ group.name }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Footer for Create and Join Buttons -->
+  <div *ngIf="showForm === 'NO'" class="sticky bottom-10 p-4">
+    <div class="flex items-center justify-center">
+      <button
+        class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150 mr-2"
+        (click)="showForm = 'CREATE'">
+        Create Group
+      </button>
+      <button
+        class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150"
+        (click)="showForm = 'JOIN'">
+        Join Group
+      </button>
+    </div>
+  </div>
+
+  <!-- Centered Form for Create/Join Group -->
+  <div *ngIf="showForm === 'JOIN' || showForm === 'CREATE'" class="flex flex-col items-center justify-center flex-grow">
+    <input [(ngModel)]="newGroupName" type="text" placeholder="..."
+           class="form-input block w-full max-w-xs border py-2 px-3 shadow-sm border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"/>
+    <div class="flex space-x-4 mt-4">
+      <button type="button"
+              class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150"
+              (click)="showForm = 'NO'">BACK
+      </button>
+      <button type="button"
+              class="bg-purple-800 hover:bg-purple-900 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150"
+              (click)="showForm === 'CREATE' ? createNewGroup(newGroupName) : joinGroup()">
+        OK
+      </button>
+    </div>
+  </div>
+</div>

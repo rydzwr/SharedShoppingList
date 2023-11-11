@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {LoginService} from "../shared/login.service";
+import {LoginService} from "../services/login.service";
 import {Router} from "@angular/router";
 import {Constants} from "../shared/constants";
 
@@ -15,7 +15,7 @@ export class LoginComponent {
 
   loginWithGoogle() {
     this.loginService.signInWithGoogle().then(userCredential => {
-      console.log('Signed in with Google:', userCredential);
+      console.log('Signed in with Google:', userCredential.user);
       this.router.navigate([Constants.HOME_ROUTE]);
     }).catch(error => {
       console.error('Error signing in with Google:', error);

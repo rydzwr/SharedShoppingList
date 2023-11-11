@@ -7,19 +7,25 @@ import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {environment} from "../environments/environment";
 import {AngularFireModule} from "@angular/fire/compat";
-import { HeaderComponent } from './shared/header/header.component';
+import {HeaderComponent} from './shared/header/header.component';
+import {GroupComponent} from './group/group.component';
+import {FormsModule} from "@angular/forms";
+import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    HeaderComponent
+    HeaderComponent,
+    GroupComponent
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AppRoutingModule
+    AngularFirestoreModule,
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {Constants} from "./shared/constants";
+import {initFlowbite} from "flowbite";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    initFlowbite();
     this.afAuth.authState.subscribe(user => {
       if (user) {
         console.log('User is signed in');
