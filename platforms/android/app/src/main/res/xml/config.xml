@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.rydzwr" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Shared Shopping List</name>
+    <description>Shared Shopping List</description>
+    <author email="rydzwr@gmail.com">
+    Kacper Rydzynski
+  </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <universal-links>
+        <host name="rydzwr.page.link" scheme="https" />
+        <host name="sharedshoppinglist-e4962.firebaseapp.com" scheme="https">
+            <path url="/__/auth/callback" />
+        </host>
+    </universal-links>
+    <preference name="loglevel" value="DEBUG" />
+    <preference name="AndroidLaunchMode" value="singleTask" />
+</widget>

@@ -6,7 +6,6 @@ import {map} from 'rxjs/operators';
 import {Router} from "@angular/router";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {User} from "../shared/interfaces/user";
-import {Constants} from "../shared/constants";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,11 @@ export class LoginService {
   private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
-  constructor(private afAuth: AngularFireAuth, private router: Router, private firestore: AngularFirestore) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private firestore: AngularFirestore
+  ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.updateUserData(user);

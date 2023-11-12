@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Shared Shopping List",
+  "short_name": "Shared Shopping List",
+  "version": "com.rydzwr",
+  "description": "Shared Shopping List",
+  "author": "Kacper Rydzynski",
+  "icons": [],
+  "start_url": "index.html"
+}

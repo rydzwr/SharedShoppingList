@@ -1,2 +1,6 @@
 <app-error-popup></app-error-popup>
 <router-outlet></router-outlet>
+<div class="bg-red-800" *ngIf="loginService.isLoggedIn() | async">
+  Logged In
+</div>
+

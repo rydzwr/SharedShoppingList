@@ -4,6 +4,7 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {Constants} from "./shared/constants";
 import {initFlowbite} from "flowbite";
 import {GlobalErrorHandlerService} from "./services/global-error-handler.service";
+import {LoginService} from "./services/login.service";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    public loginService: LoginService
   ) {
   }
 
