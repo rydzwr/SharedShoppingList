@@ -9,6 +9,7 @@ import {BehaviorSubject, combineLatest, switchMap} from "rxjs";
 import {map} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {Constants} from "../shared/constants";
+import {InputValidatorService} from "../services/input-validator.service";
 
 @Component({
   selector: 'app-group',
@@ -26,10 +27,14 @@ export class GroupComponent implements OnInit {
 
   visibleProductsMap = new Map<string, boolean>();
 
+  showModal = false;
+  showInviteModal = false;
+
   constructor(
     private productService: ProductService,
     public groupService: GroupService,
     private loginService: LoginService,
+    private validator: InputValidatorService,
     private router: Router
   ) {
     this.loginService.currentUser$.subscribe(user => {
@@ -68,21 +73,27 @@ export class GroupComponent implements OnInit {
       this.productData.user = this.currentUser.uid || 'NaN';
       this.productData.group = this.currentGroup.uid || 'NaN';
 
+      if (!this.validator.isValidInput(this.productData.name)) {
+        throw new Error("Invalid Input Data");
+      }
+
       if (this.productData.name) {
         this.productService.addProduct(this.productData)
           .then(() => {
-            console.log('Product added successfully.');
             this.showProductForm = false;
             this.productData = {name: '', count: 0, bought: false, user: '', group: ''};
           })
           .catch((error) => {
             console.error('Error adding product:', error);
+            throw new Error("Error adding product");
           });
       } else {
         console.error('Product name is not defined.');
+        throw new Error("Product name is not defined");
       }
     } else {
       console.error('User or group data is not available.');
+      throw new Error("User or group data is not available");
     }
   }
 
@@ -104,8 +115,10 @@ export class GroupComponent implements OnInit {
     product.bought = !product.bought;
 
     this.productService.updateProduct(product)
-      .then(() => console.log("Product bought status updated"))
-      .catch(error => console.error("Error updating product:", error));
+        .catch((error) => {
+          console.error("Error updating product:", error);
+          throw new Error("Error updating product");
+        });
   }
 
   clearBoughtProducts(userId: string) {
@@ -114,7 +127,11 @@ export class GroupComponent implements OnInit {
 
     boughtProducts.forEach(product => {
       if (product.uid) {
-        this.productService.removeProduct(product.uid).catch(error => console.error("Error removing product:", error));
+        this.productService.removeProduct(product.uid)
+            .catch((error) => {
+              console.error("Error removing product:", error);
+              throw new Error("Error removing product");
+            });
       }
     });
   }

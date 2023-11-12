@@ -11,7 +11,6 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

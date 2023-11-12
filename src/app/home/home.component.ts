@@ -4,6 +4,7 @@ import {Group} from '../shared/interfaces/group';
 import {LoginService} from '../services/login.service';
 import {Router} from '@angular/router';
 import {User} from '../shared/interfaces/user';
+import {InputValidatorService} from "../services/input-validator.service";
 
 @Component({
   selector: 'app-home',
@@ -11,22 +12,25 @@ import {User} from '../shared/interfaces/user';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  showForm: string = 'NO';
+  showForm: string;
   newGroupName: string = '';
+  inviteCode: string = '';
 
   private currentUser: User | null = null;
 
   constructor(
     public groupService: GroupService,
     private loginService: LoginService,
+    private validator: InputValidatorService,
     private router: Router
   ) {
+    this.showForm = 'NO';
   }
 
   // TODO
-  //  ask before leaving group
+  //  input validations
   //  login component CSS
-  //  group invitations
+  //  guard to cannot logout using browser back button
 
   ngOnInit() {
     this.showForm = 'NO';
@@ -45,11 +49,31 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/group', group.uid]);
   }
 
-  joinGroup() {
+  joinGroup(groupName: string, inviteCode: string): void {
+    if (!this.validator.isValidInput(groupName) || !this.validator.isValidInput(inviteCode)) {
+      throw new Error("Invalid Input Data");
+    }
 
+    this.showForm = 'NO';
+    const userId = this.currentUser?.uid;
+    if (userId) {
+      this.groupService.joinGroup(groupName, inviteCode, userId)
+        .catch((error) => {
+          console.error('Error joining group:', error);
+          throw new Error("Error joining group");
+        });
+    } else {
+      console.error('Current user ID is undefined.');
+      throw new Error("Current user ID is undefined");
+    }
   }
 
+
   createNewGroup(name: string) {
+    if (!this.validator.isValidInput(name)) {
+      throw new Error("Invalid Input Data");
+    }
+
     this.showForm = 'NO';
     this.groupService.createNewGroup(name, this.currentUser?.uid!);
   }

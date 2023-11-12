@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
-import {LoginService} from "../../services/login.service";
-import {Router} from "@angular/router";
-import {Constants} from "../constants";
+import { Component, OnInit } from '@angular/core';
+import { LoginService } from "../../services/login.service";
+import { Router } from "@angular/router";
+import { Constants } from "../constants";
+import { GlobalErrorHandlerService } from "../../services/global-error-handler.service";
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,10 @@ import {Constants} from "../constants";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  constructor(public loginService: LoginService, private router: Router) {
+  constructor(
+    public loginService: LoginService,
+    private router: Router,
+  ) {
   }
 
   navigateToHome() {

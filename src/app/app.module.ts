@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -11,6 +11,8 @@ import {HeaderComponent} from './shared/header/header.component';
 import {GroupComponent} from './group/group.component';
 import {FormsModule} from "@angular/forms";
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
+import {GlobalErrorHandlerService} from "./services/global-error-handler.service";
+import {ErrorPopupComponent} from './shared/error-popup/error-popup.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
     HomeComponent,
     LoginComponent,
     HeaderComponent,
-    GroupComponent
+    GroupComponent,
+    ErrorPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,7 @@ import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{provide: ErrorHandler, useClass: GlobalErrorHandlerService}],
   bootstrap: [AppComponent]
 })
 export class AppModule {

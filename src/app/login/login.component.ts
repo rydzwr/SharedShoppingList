@@ -15,10 +15,10 @@ export class LoginComponent {
 
   loginWithGoogle() {
     this.loginService.signInWithGoogle().then(userCredential => {
-      console.log('Signed in with Google:', userCredential.user);
       this.router.navigate([Constants.HOME_ROUTE]);
     }).catch(error => {
       console.error('Error signing in with Google:', error);
+      throw new Error('Error signing in with Google')
     });
   }
 }

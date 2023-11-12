@@ -31,7 +31,6 @@ export class ProductService {
   }
 
   updateProduct(product: Product): Promise<void> {
-    console.log(product.uid)
     return this.firestore.collection('products').doc(product.uid).update({ bought: product.bought });
   }
 }

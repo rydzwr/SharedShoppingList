@@ -31,20 +31,27 @@
     </div>
   </div>
 
-  <!-- Centered Form for Create/Join Group -->
-  <div *ngIf="showForm === 'JOIN' || showForm === 'CREATE'" class="flex flex-col items-center justify-center flex-grow">
-    <input [(ngModel)]="newGroupName" type="text" placeholder="..."
-           class="form-input block w-full max-w-xs border py-2 px-3 shadow-sm border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"/>
-    <div class="flex space-x-4 mt-4">
-      <button type="button"
-              class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150"
-              (click)="showForm = 'NO'">BACK
-      </button>
-      <button type="button"
-              class="bg-purple-800 hover:bg-purple-900 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150"
-              (click)="showForm === 'CREATE' ? createNewGroup(newGroupName) : joinGroup()">
-        OK
-      </button>
+  <div *ngIf="showForm === 'JOIN' || showForm === 'CREATE'" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+    <!-- Modal Content -->
+    <div class="bg-gray-900 p-8 rounded-lg shadow-lg max-w-sm mx-auto">
+      <input [(ngModel)]="newGroupName" type="text" placeholder="Group Name"
+             class="form-input block w-full border py-2 px-3 shadow-sm border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-center"/>
+
+      <!-- Invite Code Input (only for Joining) -->
+      <input *ngIf="showForm === 'JOIN'" [(ngModel)]="inviteCode" type="text" placeholder="Invite Code"
+             class="form-input block w-full border py-2 px-3 mt-4 shadow-sm border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-center"/>
+
+      <div class="flex justify-center space-x-4 mt-6">
+        <button type="button"
+                class="bg-gray-950 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150"
+                (click)="showForm = 'NO'">BACK
+        </button>
+        <button type="button"
+                class="bg-purple-800 hover:bg-purple-900 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150"
+                (click)="showForm === 'CREATE' ? createNewGroup(newGroupName) : joinGroup(newGroupName, inviteCode)">
+          OK
+        </button>
+      </div>
     </div>
   </div>
 </div>
