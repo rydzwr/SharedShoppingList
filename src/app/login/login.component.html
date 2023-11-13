@@ -1,12 +1,19 @@
 <!-- Login Page -->
+
 <div class="bg-gray-800 h-screen flex flex-col">
   <h1 class="text-white text-4xl font-bold mt-20 mb-4 text-center">
     Shared Shopping List
   </h1>
   <div class="flex flex-col items-center justify-center flex-grow mt-4">
-    <button (click)="loginWithGoogle()"
+
+    <!-- Name Input Field -->
+    <input [(ngModel)]="userName" type="text" placeholder="Enter your name"
+           class="mb-4 p-2 rounded-full shadow-lg text-lg">
+
+    <!-- Sign In Button -->
+    <button (click)="signIn(userName)"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg text-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-      Sign in with Google
+      Sign In
     </button>
   </div>
 </div>

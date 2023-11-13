@@ -19,4 +19,6 @@ export class HeaderComponent {
   navigateToHome() {
     this.router.navigate([Constants.HOME_ROUTE]);
   }
+
+  protected readonly localStorage = localStorage;
 }

@@ -27,11 +27,6 @@ export class HomeComponent implements OnInit {
     this.showForm = 'NO';
   }
 
-  // TODO
-  //  input validations
-  //  login component CSS
-  //  guard to cannot logout using browser back button
-
   ngOnInit() {
     this.showForm = 'NO';
     this.loginService.currentUser$.subscribe((user) => {

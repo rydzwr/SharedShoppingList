@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LoginService} from "../services/login.service";
 import {Router} from "@angular/router";
 import {Constants} from "../shared/constants";
+import {InputValidatorService} from "../services/input-validator.service";
 
 @Component({
   selector: 'app-login',
@@ -9,16 +10,30 @@ import {Constants} from "../shared/constants";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  userName: string = '';
 
-  constructor(private loginService: LoginService, private router: Router) {
+  constructor(
+    private loginService: LoginService,
+    private validator: InputValidatorService,
+    private router: Router
+  ) {
+    this.loginService.currentUser$.subscribe(user => {
+      if (user) {
+        this.router.navigate([Constants.HOME_ROUTE]);
+      }
+    });
   }
 
-  loginWithGoogle() {
-    this.loginService.signInWithGoogle().then(userCredential => {
+  signIn(name: string) {
+    if (!this.validator.isValidInput(name)) {
+      throw new Error("Invalid Input Data");
+    }
+
+    this.loginService.signInAnonymously(name).then(() => {
       this.router.navigate([Constants.HOME_ROUTE]);
     }).catch(error => {
-      console.error('Error signing in with Google:', error);
-      throw new Error('Error signing in with Google')
+      console.error(error);
+      throw new Error("Error Occurred While Signing In");
     });
   }
 }

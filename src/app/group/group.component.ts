@@ -19,22 +19,21 @@ import {InputValidatorService} from "../services/input-validator.service";
 export class GroupComponent implements OnInit {
 
   usersProducts$ = new BehaviorSubject<Map<string, Product[]>>(new Map());
-
-  productData: Product = {name: '', count: 0, bought: false, user: '', group: ''};
-  showProductForm = false;
-  currentUser: User | null | undefined;
-  currentGroup: Group | null | undefined;
-
   visibleProductsMap = new Map<string, boolean>();
 
-  showModal = false;
+  productData: Product = {name: '', count: 0, bought: false, user: '', group: ''};
+  currentGroup: Group | null | undefined;
+  currentUser: User | null | undefined;
+  showProductForm = false;
+
   showInviteModal = false;
+  showModal = false;
 
   constructor(
-    private productService: ProductService,
-    public groupService: GroupService,
-    private loginService: LoginService,
     private validator: InputValidatorService,
+    private productService: ProductService,
+    private loginService: LoginService,
+    public groupService: GroupService,
     private router: Router
   ) {
     this.loginService.currentUser$.subscribe(user => {

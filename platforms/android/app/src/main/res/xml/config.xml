@@ -8,12 +8,5 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <universal-links>
-        <host name="rydzwr.page.link" scheme="https" />
-        <host name="sharedshoppinglist-e4962.firebaseapp.com" scheme="https">
-            <path url="/__/auth/callback" />
-        </host>
-    </universal-links>
     <preference name="loglevel" value="DEBUG" />
-    <preference name="AndroidLaunchMode" value="singleTask" />
 </widget>

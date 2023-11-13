@@ -6,11 +6,12 @@ import {AuthGuard} from "./shared/auth.guard";
 import {GroupComponent} from "./group/group.component";
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'group/:groupId', component: GroupComponent, canActivate: [AuthGuard] },
-  { path: '', pathMatch: 'full', component: HomeComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' },
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
