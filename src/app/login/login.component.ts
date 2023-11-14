@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {LoginService} from "../services/login.service";
 import {Router} from "@angular/router";
 import {Constants} from "../shared/constants";
 import {InputValidatorService} from "../services/input-validator.service";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 @Component({
   selector: 'app-login',
@@ -11,17 +12,30 @@ import {InputValidatorService} from "../services/input-validator.service";
 })
 export class LoginComponent {
   userName: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private loginService: LoginService,
     private validator: InputValidatorService,
-    private router: Router
+    private router: Router,
+    private afAuth: AngularFireAuth,
   ) {
-    this.loginService.currentUser$.subscribe(user => {
-      if (user) {
-        this.router.navigate([Constants.HOME_ROUTE]);
+    this.isLoading = true;
+
+    this.afAuth.signInAnonymously().then(user => {
+      if (user.user) {
+        loginService.initializeCurrentUser(user)
+        setTimeout(() => {
+          this.router.navigate([Constants.HOME_ROUTE]);
+          this.isLoading = false;
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
       }
-    });
+      }
+    );
   }
 
   signIn(name: string) {

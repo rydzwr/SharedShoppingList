@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {GroupService} from '../services/group.service';
 import {Group} from '../shared/interfaces/group';
 import {LoginService} from '../services/login.service';
 import {Router} from '@angular/router';
-import {User} from '../shared/interfaces/user';
 import {InputValidatorService} from "../services/input-validator.service";
+import {Constants} from "../shared/constants";
 
 @Component({
   selector: 'app-home',
@@ -16,8 +16,6 @@ export class HomeComponent {
   newGroupName: string = '';
   inviteCode: string = '';
 
-  private currentUser: User | null = null;
-
   constructor(
     public groupService: GroupService,
     private loginService: LoginService,
@@ -25,19 +23,14 @@ export class HomeComponent {
     private router: Router
   ) {
     this.showForm = 'NO';
-    this.loginService.currentUser$.subscribe((user) => {
-      if (user && user.uid) {
-        this.currentUser = user;
-        this.groupService.fetchUserGroups(user.uid);
-      } else {
-        throw new Error('No User UID Data!');
-      }
-    });
+    this.loginService.currentUser$.subscribe(user => {
+      this.groupService.fetchUserGroups(user?.uid!);
+    })
   }
 
   selectGroup(group: Group) {
     this.groupService.selectGroup(group);
-    this.router.navigate(['/group', group.uid]);
+    this.router.navigate([Constants.GROUP_ROUTE]);
   }
 
   joinGroup(groupName: string, inviteCode: string): void {
@@ -46,15 +39,16 @@ export class HomeComponent {
     }
 
     this.showForm = 'NO';
-    const userId = this.currentUser?.uid;
-    if (userId) {
-      this.groupService.joinGroup(groupName, inviteCode, userId);
-    } else {
-      console.error('Current user ID is undefined.');
-      throw new Error("Current user ID is undefined");
-    }
+    this.loginService.currentUser$.subscribe(user => {
+        if (user) {
+          this.groupService.joinGroup(groupName, inviteCode, user.uid!);
+        } else {
+          console.error('Current user ID is undefined.');
+          throw new Error("Current user ID is undefined");
+        }
+      }
+    );
   }
-
 
   createNewGroup(name: string) {
     if (!this.validator.isValidInput(name)) {
@@ -62,7 +56,8 @@ export class HomeComponent {
     }
 
     this.showForm = 'NO';
-    this.groupService.createNewGroup(name, this.currentUser?.uid!);
+    this.loginService.currentUser$.subscribe(user => {
+      this.groupService.createNewGroup(name, user?.uid!);
+    });
   }
-
 }

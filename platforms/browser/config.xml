@@ -8,4 +8,7 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="FadeSplashScreenDuration" value="750" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#0f0f0f" />
 </widget>

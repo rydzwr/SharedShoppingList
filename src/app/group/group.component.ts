@@ -36,6 +36,7 @@ export class GroupComponent {
     public groupService: GroupService,
     private router: Router
   ) {
+
     this.loginService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });

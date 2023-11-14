@@ -26,5 +26,8 @@ export class AppComponent {
   //  Get user products count in group before adding one, to check if user exceeds users products limit
 
   // TODO 4
-  //  Deal with reload when in group component
+  //  Write constrains on db
+
+  // TODO 5
+  //  Fix overflow on phone, and generally CSS on mobile
 }

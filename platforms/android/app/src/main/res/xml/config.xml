@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.rydzwr" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.rydzwr" version="1.0.0" xmlns="http://www.w3.org/ns/widgets">
     <name>Shared Shopping List</name>
     <description>Shared Shopping List</description>
     <author email="rydzwr@gmail.com">
@@ -9,4 +9,8 @@
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <preference name="loglevel" value="DEBUG" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="FadeSplashScreenDuration" value="750" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#1a0a30" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="src/assets/splashscreen.xml" />
 </widget>

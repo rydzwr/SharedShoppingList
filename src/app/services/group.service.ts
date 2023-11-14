@@ -23,6 +23,7 @@ export class GroupService {
   }
 
   fetchUserGroups(userId: string): void {
+    console.log("Fetching Groups");
     this.firestore
       .collection('groups', (ref) => ref.where('users', 'array-contains', userId))
       .snapshotChanges()
