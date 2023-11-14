@@ -14,4 +14,17 @@ export class AppComponent {
   constructor() {
     initFlowbite();
   }
+
+  // TODO 1
+  //  Reactive update group users,
+  //  because now, when other user leaves group it doesn't refresh group list on other device
+
+  // TODO 2
+  //  Cascade remove user products when he leaves group
+
+  // TODO 3
+  //  Get user products count in group before adding one, to check if user exceeds users products limit
+
+  // TODO 4
+  //  Deal with reload when in group component
 }

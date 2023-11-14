@@ -12,6 +12,6 @@ export class InputValidatorService {
     if (!input || input.length === 0 || input.length > Constants.MAX_INPUT_LENGTH) {
       return false;
     }
-    return !/[^a-zA-Z0-9\-_ ]/.test(input);
+    return !/[^a-zA-Z0-9\-_ ĄąĆćĘęŁłŃńÓóŚśŹźŻż]/.test(input);
   }
 }

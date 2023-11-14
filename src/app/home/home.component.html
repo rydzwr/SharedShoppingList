@@ -34,11 +34,12 @@
   <div *ngIf="showForm === 'JOIN' || showForm === 'CREATE'" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
     <!-- Modal Content -->
     <div class="bg-gray-900 p-8 rounded-lg shadow-lg max-w-sm mx-auto">
-      <input [(ngModel)]="newGroupName" type="text" placeholder="Group Name"
+      <input [(ngModel)]="newGroupName" type="text" placeholder="Group Name" autofocus
              class="form-input block w-full border py-2 px-3 shadow-sm border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-center"/>
 
       <!-- Invite Code Input (only for Joining) -->
       <input *ngIf="showForm === 'JOIN'" [(ngModel)]="inviteCode" type="text" placeholder="Invite Code"
+             [autofocus]="showForm === 'JOIN'"
              class="form-input block w-full border py-2 px-3 mt-4 shadow-sm border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-center"/>
 
       <div class="flex justify-center space-x-4 mt-6">

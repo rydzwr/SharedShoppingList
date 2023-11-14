@@ -16,7 +16,7 @@ import {InputValidatorService} from "../services/input-validator.service";
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss']
 })
-export class GroupComponent implements OnInit {
+export class GroupComponent {
 
   usersProducts$ = new BehaviorSubject<Map<string, Product[]>>(new Map());
   visibleProductsMap = new Map<string, boolean>();
@@ -43,9 +43,7 @@ export class GroupComponent implements OnInit {
     this.groupService.selectedGroup$.subscribe(group => {
       this.currentGroup = group;
     });
-  }
 
-  ngOnInit(): void {
     this.groupService.groupUsers$.pipe(
       switchMap(users => {
         if (!users.length) {

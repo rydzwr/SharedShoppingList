@@ -11,7 +11,7 @@ import {InputValidatorService} from "../services/input-validator.service";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   showForm: string;
   newGroupName: string = '';
   inviteCode: string = '';
@@ -24,10 +24,6 @@ export class HomeComponent implements OnInit {
     private validator: InputValidatorService,
     private router: Router
   ) {
-    this.showForm = 'NO';
-  }
-
-  ngOnInit() {
     this.showForm = 'NO';
     this.loginService.currentUser$.subscribe((user) => {
       if (user && user.uid) {
@@ -52,11 +48,7 @@ export class HomeComponent implements OnInit {
     this.showForm = 'NO';
     const userId = this.currentUser?.uid;
     if (userId) {
-      this.groupService.joinGroup(groupName, inviteCode, userId)
-        .catch((error) => {
-          console.error('Error joining group:', error);
-          throw new Error("Error joining group");
-        });
+      this.groupService.joinGroup(groupName, inviteCode, userId);
     } else {
       console.error('Current user ID is undefined.');
       throw new Error("Current user ID is undefined");
