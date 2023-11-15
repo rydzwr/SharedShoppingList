@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {LoginService} from "../services/login.service";
 import {Router} from "@angular/router";
 import {Constants} from "../shared/constants";
-import {InputValidatorService} from "../services/input-validator.service";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 @Component({
@@ -16,7 +15,6 @@ export class LoginComponent {
 
   constructor(
     private loginService: LoginService,
-    private validator: InputValidatorService,
     private router: Router,
     private afAuth: AngularFireAuth,
   ) {
@@ -39,10 +37,6 @@ export class LoginComponent {
   }
 
   signIn(name: string) {
-    if (!this.validator.isValidInput(name)) {
-      throw new Error("Invalid Input Data");
-    }
-
     this.loginService.signInAnonymously(name).then(() => {
       this.router.navigate([Constants.HOME_ROUTE]);
     }).catch(error => {

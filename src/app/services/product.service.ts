@@ -31,6 +31,7 @@ export class ProductService {
   }
 
   updateProduct(product: Product): Promise<void> {
+    product.bought = !product.bought;
     return this.firestore.collection('products').doc(product.uid).update({ bought: product.bought });
   }
 }

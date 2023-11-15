@@ -21,7 +21,7 @@ import {ErrorPopupComponent} from './shared/error-popup/error-popup.component';
     LoginComponent,
     HeaderComponent,
     GroupComponent,
-    ErrorPopupComponent
+    ErrorPopupComponent,
   ],
   imports: [
     BrowserModule,

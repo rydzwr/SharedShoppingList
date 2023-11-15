@@ -3,6 +3,6 @@ export interface Product {
   name: string;
   count: number;
   bought: boolean;
-  user: string;
-  group: string;
+  user?: string;
+  group?: string;
 }
