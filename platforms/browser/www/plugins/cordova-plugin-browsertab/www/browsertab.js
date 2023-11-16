@@ -1,4 +1,4 @@
-cordova.define("cordova-plugin-browsertab.BrowserTab", function(require, exports, module) { /*
+cordova.define("cordova-plugin-browsertab.BrowserTab", function (require, exports, module) { /*
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -12,22 +12,24 @@ cordova.define("cordova-plugin-browsertab.BrowserTab", function(require, exports
  * limitations under the License.
  */
 
-var exec = require('cordova/exec');
+  var exec = require('cordova/exec');
 
-exports.isAvailable = function(success, error) {
-  exec(success, error, 'BrowserTab', 'isAvailable', []);
-};
+  exports.isAvailable = function (success, error) {
+    exec(success, error, 'BrowserTab', 'isAvailable', []);
+  };
 
-exports.openUrl = function(url, opt_error) {
-  var doNothing = function() {};
-  var error = (!opt_error) ? doNothing : opt_error;
-  exec(doNothing, error, 'BrowserTab', 'openUrl', [url]);
-};
+  exports.openUrl = function (url, opt_error) {
+    var doNothing = function () {
+    };
+    var error = (!opt_error) ? doNothing : opt_error;
+    exec(doNothing, error, 'BrowserTab', 'openUrl', [url]);
+  };
 
-exports.close = function(opt_error) {
-  var doNothing = function() {};
-  var error = (!opt_error) ? doNothing : opt_error;
-  exec(doNothing, error, 'BrowserTab', 'close', []);
-};
+  exports.close = function (opt_error) {
+    var doNothing = function () {
+    };
+    var error = (!opt_error) ? doNothing : opt_error;
+    exec(doNothing, error, 'BrowserTab', 'close', []);
+  };
 
 });

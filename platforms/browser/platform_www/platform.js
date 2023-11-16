@@ -20,25 +20,25 @@
 */
 
 module.exports = {
-    id: 'browser',
-    cordovaVersion: '4.2.0', // cordova-js
+  id: 'browser',
+  cordovaVersion: '4.2.0', // cordova-js
 
-    bootstrap: function () {
-        const modulemapper = require('cordova/modulemapper');
-        const channel = require('cordova/channel');
+  bootstrap: function () {
+    const modulemapper = require('cordova/modulemapper');
+    const channel = require('cordova/channel');
 
-        modulemapper.clobbers('cordova/exec/proxy', 'cordova.commandProxy');
+    modulemapper.clobbers('cordova/exec/proxy', 'cordova.commandProxy');
 
-        channel.onNativeReady.fire();
+    channel.onNativeReady.fire();
 
-        document.addEventListener('visibilitychange', function () {
-            if (document.hidden) {
-                channel.onPause.fire();
-            } else {
-                channel.onResume.fire();
-            }
-        });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        channel.onPause.fire();
+      } else {
+        channel.onResume.fire();
+      }
+    });
 
     // End of bootstrap
-    }
+  }
 };

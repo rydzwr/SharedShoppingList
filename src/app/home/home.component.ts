@@ -1,61 +1,81 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {GroupService} from '../services/group.service';
-import {Group} from '../shared/interfaces/group';
 import {LoginService} from '../services/login.service';
-import {Router} from '@angular/router';
-import {Constants} from "../shared/constants";
+import {catchError, exhaustMap, filter, Subject, takeUntil, tap} from "rxjs";
+import {fromPromise} from "rxjs/internal/observable/innerFrom";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
-  showForm: string;
-  newGroupName: string = '';
+export class HomeComponent implements OnDestroy {
+
+  public createGroupSubject = new Subject<string>();
+  public joinGroupSubject = new Subject<void>();
+
+  destroy$ = new Subject<void>();
+
   inviteCode: string = '';
+  groupName: string = '';
+  showForm: string;
 
   constructor(
     public groupService: GroupService,
     private loginService: LoginService,
-    private router: Router
   ) {
+    this.createGroupEffect$.subscribe();
+    this.joinGroupEffect$.subscribe();
+
     this.showForm = 'NO';
-    this.loginService.currentUser$.subscribe(user => {
-      this.groupService.fetchUserGroups(user?.uid!);
-    })
+    this.groupService.fetchUserGroups(loginService.currentLoggedUser?.uid!);
   }
 
-  selectGroup(group: Group) {
-    this.groupService.selectGroup(group);
-    this.router.navigate([Constants.GROUP_ROUTE]);
-  }
+  createGroupEffect$ = this.createGroupSubject.asObservable().pipe(
+    filter(name => !!name && name.length > 0),
+    takeUntil(this.destroy$),
+    exhaustMap((name) =>
+      fromPromise(this.groupService.createNewGroup(name, this.loginService.currentLoggedUser?.uid!))
+    ),
+    tap((newGroup) => {
+      this.resetFormAndHide();
+      this.groupService.selectedGroupSubject.next(newGroup);
+    }),
+    catchError((e: Error) => {
+      throw new Error(e.message);
+    })
+  );
+
+  joinGroupEffect$ = this.joinGroupSubject.asObservable().pipe(
+    filter(() => !!this.groupName && this.groupName.trim().length > 0),
+    filter(() => !!this.inviteCode && this.inviteCode.trim().length > 0),
+    takeUntil(this.destroy$),
+    exhaustMap(() =>
+      fromPromise(this.groupService.joinGroup(this.groupName, this.inviteCode))
+    ),
+    tap((newGroup) => {
+     this.resetFormAndHide();
+      this.groupService.selectedGroupSubject.next(newGroup);
+    }),
+    catchError((e: Error) => {
+      throw new Error(e.message);
+    })
+  );
 
   joinGroup(groupName: string, inviteCode: string): void {
     this.showForm = 'NO';
-    this.loginService.currentUser$.subscribe(user => {
-        if (user) {
-          this.groupService.joinGroup(groupName, inviteCode, user.uid!);
-        } else {
-          console.error('Current user ID is undefined.');
-          throw new Error("Current user ID is undefined");
-        }
-      }
-    );
+    this.groupName = groupName;
+    this.inviteCode = inviteCode;
+    this.joinGroupSubject.next();
   }
 
   resetFormAndHide() {
-    this.newGroupName = '';
+    this.groupName = '';
     this.inviteCode = '';
     this.showForm = 'NO';
   }
 
-
-  createNewGroup(name: string) {
-    this.showForm = 'NO';
-
-    this.loginService.currentUser$.subscribe(user => {
-      this.groupService.createNewGroup(name, user?.uid!);
-    });
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }

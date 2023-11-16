@@ -21,17 +21,17 @@ export class LoginComponent {
     this.isLoading = true;
 
     this.afAuth.signInAnonymously().then(user => {
-      if (user.user) {
-        loginService.initializeCurrentUser(user)
-        setTimeout(() => {
-          this.router.navigate([Constants.HOME_ROUTE]);
-          this.isLoading = false;
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 1000);
-      }
+        if (user.user) {
+          loginService.initializeCurrentUser(user)
+          setTimeout(() => {
+            this.router.navigate([Constants.HOME_ROUTE]);
+            this.isLoading = false;
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000);
+        }
       }
     );
   }

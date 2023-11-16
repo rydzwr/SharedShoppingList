@@ -22,6 +22,6 @@
 const android_sdk = require('cordova-android/lib/android_sdk');
 
 android_sdk.print_newest_available_sdk_target().catch(err => {
-    console.error(err);
-    process.exit(2);
+  console.error(err);
+  process.exit(2);
 });

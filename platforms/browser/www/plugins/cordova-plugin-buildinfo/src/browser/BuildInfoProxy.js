@@ -1,4 +1,4 @@
-cordova.define("cordova-plugin-buildinfo.BuildInfoProxy", function(require, exports, module) { /*
+cordova.define("cordova-plugin-buildinfo.BuildInfoProxy", function (require, exports, module) { /*
 The MIT License (MIT)
 
 Copyright (c) 2019 Mikihiro Hayashi
@@ -22,40 +22,51 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-BuildInfoProxy = {
+  BuildInfoProxy = {
     _cache: null,
 
     init: function (successCallback, errorCallback, args) {
-        var self = BuildInfoProxy;
+      var self = BuildInfoProxy;
 
-        if (null !== self._cache) {
-            successCallback(self._cache);
-            return;
-        }
+      if (null !== self._cache) {
+        successCallback(self._cache);
+        return;
+      }
 
-        try {
-            /* <EMBED_CODE> */
-            var json = {"debug":null,"buildDate":null,"packageName":null,"basePackageName":null,"name":null,"displayName":null,"version":null,"versionCode":null,"buildType":null,"flavor":null};
-            /* </EMBED_CODE> */
+      try {
+        /* <EMBED_CODE> */
+        var json = {
+          "debug": null,
+          "buildDate": null,
+          "packageName": null,
+          "basePackageName": null,
+          "name": null,
+          "displayName": null,
+          "version": null,
+          "versionCode": null,
+          "buildType": null,
+          "flavor": null
+        };
+        /* </EMBED_CODE> */
 
-            var ret = {
-                packageName    : json.packageName     || null,
-                basePackageName: json.basePackageName || null,
-                displayName    : json.displayName     || json.name || null,
-                name           : json.name            || null,
-                version        : json.version         || null,
-                versionCode    : json.versionCode     || null,
-                debug          : json.debug           || false,
-                buildDate      : json.buildDate       || null
-            };
+        var ret = {
+          packageName: json.packageName || null,
+          basePackageName: json.basePackageName || null,
+          displayName: json.displayName || json.name || null,
+          name: json.name || null,
+          version: json.version || null,
+          versionCode: json.versionCode || null,
+          debug: json.debug || false,
+          buildDate: json.buildDate || null
+        };
 
-            self._cache = ret;
-            successCallback(ret);
-        } catch (e) {
-            errorCallback(e.message);
-        }
+        self._cache = ret;
+        successCallback(ret);
+      } catch (e) {
+        errorCallback(e.message);
+      }
     }
-};
+  };
 
-cordova.commandProxy.add("BuildInfo", BuildInfoProxy);
+  cordova.commandProxy.add("BuildInfo", BuildInfoProxy);
 });

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ErrorPopupComponent } from './error-popup.component';
+import {ErrorPopupComponent} from './error-popup.component';
 
 describe('ErrorPopupComponent', () => {
   let component: ErrorPopupComponent;

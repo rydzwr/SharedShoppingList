@@ -27,11 +27,11 @@ const check_reqs = require('./check_reqs');
  *   Creates a zip file int platform/build folder
  */
 module.exports.run = function () {
-    return check_reqs.run();
+  return check_reqs.run();
 };
 
 module.exports.help = function () {
-    console.log('Usage: cordova build browser');
-    const wwwPath = path.resolve(path.join(__dirname, '../../www'));
-    console.log("Build will create the packaged app in '" + wwwPath + "'.");
+  console.log('Usage: cordova build browser');
+  const wwwPath = path.resolve(path.join(__dirname, '../../www'));
+  console.log("Build will create the packaged app in '" + wwwPath + "'.");
 };

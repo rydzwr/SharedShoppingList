@@ -1,7 +1,7 @@
 <div *ngIf="errorVisible && !!(myErrorHandler.error$ | async)?.message" class="fixed top-20 right-10 z-50">
   <div class="bg-red-800 text-white py-5 px-10 rounded shadow-md" style="font-size: 10em;">
     <div class="text-sm md:text-lg text-gray-200">
-     {{ (myErrorHandler.error$ | async)?.message }}
+      {{ (myErrorHandler.error$ | async)?.message }}
     </div>
   </div>
 </div>

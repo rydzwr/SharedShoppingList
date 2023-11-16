@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { LoginService } from "../../services/login.service";
-import { Router } from "@angular/router";
-import { Constants } from "../constants";
-import { GlobalErrorHandlerService } from "../../services/global-error-handler.service";
+import {Component} from '@angular/core';
+import {LoginService} from "../../services/login.service";
+import {Router} from "@angular/router";
+import {Constants} from "../constants";
 
 @Component({
   selector: 'app-header',

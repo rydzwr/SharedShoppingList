@@ -1,20 +1,20 @@
 <app-header></app-header>
-<div *ngIf="groupService.selectedGroup$ | async as group" class="pt-[6rem] flex flex-col items-center mx-4 lg:mx-8">
+<div class="pt-[6rem] flex flex-col items-center mx-4 lg:mx-8">
 
-  <div class="bg-gray-900 text-white text-lg font-bold text-center p-5 w-full max-w-md mx-auto rounded-lg flex justify-between items-center">
+  <div
+    class="bg-gray-900 text-white text-lg font-bold text-center p-5 w-full max-w-md mx-auto rounded-lg flex justify-between items-center">
     <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
             (click)="showInviteModal = true">
       Invite
     </button>
 
-    <span>{{ group.name }}</span>
+    <span>{{ groupService.selectedGroup?.name }}</span>
 
     <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
             (click)="showModal = true">
       Leave
     </button>
   </div>
-
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full min-w-max max-w-6xl mt-4">
     <table class="w-full text-sm text-left text-gray-400 bg-gray-800 border-2 border-gray-950">
@@ -95,8 +95,12 @@
     <h2 class="text-lg text-gray-200 font-bold mb-4">Leave Group Confirmation</h2>
     <p class="text-gray-200">Are you sure you want to leave this group?</p>
     <div class="flex justify-around mt-4">
-      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="leaveGroupSubject.next(); showModal = false;">Yes, Leave</button>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="showModal = false;">No, Stay</button>
+      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              (click)="leaveGroupSubject.next(); showModal = false;">Yes, Leave
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="showModal = false;">
+        No, Stay
+      </button>
     </div>
   </div>
 </div>
@@ -106,9 +110,11 @@
   <div class="bg-gray-950 p-6 rounded-lg shadow-lg text-center">
     <h2 class="text-lg text-gray-200 font-bold mb-4">Invite to Group</h2>
     <p class="text-gray-200">Invite someone to join this group.</p>
-    <p class="text-gray-200 font-bold">Invite Code: {{ currentGroup?.inviteCode }}</p>
+    <p class="text-gray-200 font-bold">Invite Code: {{ groupService.selectedGroup?.inviteCode }}</p>
     <div class="flex justify-center mt-4">
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="showInviteModal = false;">OK</button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              (click)="showInviteModal = false;">OK
+      </button>
     </div>
   </div>
 </div>

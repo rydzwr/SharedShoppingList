@@ -6,7 +6,8 @@
     <div class="flex justify-center w-full">
       <div class="w-full max-w-md p-4">
         <div class="space-y-2">
-          <button *ngFor="let group of (groupService.userGroups$ | async)" (click)="selectGroup(group)"
+          <button *ngFor="let group of (groupService.userGroups$ | async)"
+                  (click)="groupService.selectedGroupSubject.next(group)"
                   class="bg-purple-800 hover:bg-purple-900 text-white font-bold py-3 px-6 rounded-lg w-full transition ease-in-out duration-150">
             {{ group.name }}
           </button>
@@ -31,10 +32,11 @@
     </div>
   </div>
 
-  <div *ngIf="showForm === 'JOIN' || showForm === 'CREATE'" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+  <div *ngIf="showForm === 'JOIN' || showForm === 'CREATE'"
+       class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
     <!-- Modal Content -->
     <div class="bg-gray-900 p-8 rounded-lg shadow-lg max-w-sm mx-auto">
-      <input [(ngModel)]="newGroupName" type="text" placeholder="Group Name" autofocus
+      <input [(ngModel)]="groupName" type="text" placeholder="Group Name" autofocus
              class="form-input block w-full border py-2 px-3 shadow-sm border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-center"/>
 
       <!-- Invite Code Input (only for Joining) -->
@@ -49,7 +51,7 @@
         </button>
         <button type="button"
                 class="bg-purple-800 hover:bg-purple-900 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-150"
-                (click)="showForm === 'CREATE' ? createNewGroup(newGroupName) : joinGroup(newGroupName, inviteCode)">
+                (click)="showForm === 'CREATE' ? createGroupSubject.next(groupName) : joinGroup(groupName, inviteCode)">
           OK
         </button>
       </div>

@@ -1,5 +1,5 @@
-import { ErrorHandler, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {ErrorHandler, Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable()
 export class GlobalErrorHandlerService implements ErrorHandler {

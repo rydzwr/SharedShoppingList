@@ -25,8 +25,8 @@ const args = process.argv;
 // provide help
 const helpOptions = '--help /? -h /h help -help /help'.split(' ');
 if (helpOptions.includes(args[2])) {
-    build.help();
-    process.exit(0);
+  build.help();
+  process.exit(0);
 } else {
-    build.run();
+  build.run();
 }

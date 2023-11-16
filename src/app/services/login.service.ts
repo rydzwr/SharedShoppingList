@@ -5,14 +5,12 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {User} from "../shared/interfaces/user";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {map} from "rxjs/operators";
-import {getAuth} from "firebase/auth";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-  currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
+  private currentUser: User | undefined;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -35,25 +33,15 @@ export class LoginService {
       this.getUserByUid(userFromAuth.user?.uid!).subscribe(
         user => {
           if (user.uid && user.name) {
-            if (!name){
+            if (!name) {
               localStorage.setItem("userName", user.name);
             }
-            this.currentUserSubject.next(user);
+            this.currentUser = user;
           }
         },
-        error => {
-          this.currentUserSubject.next(null);
-        }
-      );
-    } else {
-      this.currentUserSubject.next(null);
-    }
-  }
 
-  isLoggedIn(): Observable<boolean> {
-    return this.currentUser$.pipe(
-      map(user => !!user)
-    );
+      );
+    }
   }
 
   async signInAnonymously(name: string): Promise<void> {
@@ -62,7 +50,7 @@ export class LoginService {
       if (result.user) {
         localStorage.setItem("userName", name);
 
-        this.currentUserSubject.next(this.mapFirebaseUserToCustomUser(result.user));
+        this.currentUser = this.mapFirebaseUserToCustomUser(result.user);
         this.updateUserData(result.user, name);
       } else {
         console.error('Failed to sign in anonymously');
@@ -103,5 +91,9 @@ export class LoginService {
       };
       userRef.set(userData, {merge: true});
     }
+  }
+
+  public get currentLoggedUser() {
+    return this.currentUser;
   }
 }

@@ -11,13 +11,13 @@
   <allow-intent href="https://*/*"/>
 
   <platform name="android">
-    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="src/assets/splashscreen.xml" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="src/assets/splashscreen.xml"/>
     <!-- Other Android specific preferences and configurations -->
   </platform>
 
-  <preference name="SplashScreenDelay" value="3000" />
-  <preference name="FadeSplashScreenDuration" value="750" />
-  <preference name="AndroidWindowSplashScreenBackground" value="#1a0a30" />
+  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="FadeSplashScreenDuration" value="750"/>
+  <preference name="AndroidWindowSplashScreenBackground" value="#1a0a30"/>
 
 
 </widget>

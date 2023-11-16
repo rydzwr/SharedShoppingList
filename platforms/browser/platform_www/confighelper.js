@@ -21,67 +21,67 @@
 
 let config;
 
-function Config (xhr) {
-    function loadPreferences (xhr) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(xhr.responseText, 'application/xml');
+function Config(xhr) {
+  function loadPreferences(xhr) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xhr.responseText, 'application/xml');
 
-        const preferences = doc.getElementsByTagName('preference');
-        return Array.prototype.slice.call(preferences);
-    }
+    const preferences = doc.getElementsByTagName('preference');
+    return Array.prototype.slice.call(preferences);
+  }
 
-    this.xhr = xhr;
-    this.preferences = loadPreferences(this.xhr);
+  this.xhr = xhr;
+  this.preferences = loadPreferences(this.xhr);
 }
 
-function readConfig (success, error) {
-    const xhr = new XMLHttpRequest();
+function readConfig(success, error) {
+  const xhr = new XMLHttpRequest();
 
-    if (typeof config !== 'undefined') {
+  if (typeof config !== 'undefined') {
+    success(config);
+  }
+
+  function fail(msg) {
+    console.error(msg);
+
+    if (error) {
+      error(msg);
+    }
+  }
+
+  const xhrStatusChangeHandler = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200 || xhr.status === 304 || xhr.status === 0 /* file:// */) {
+        config = new Config(xhr);
         success(config);
+      } else {
+        fail('[Browser][cordova.js][xhrStatusChangeHandler] Could not XHR config.xml: ' + xhr.statusText);
+      }
     }
+  };
 
-    function fail (msg) {
-        console.error(msg);
+  xhr.addEventListener('load', xhrStatusChangeHandler);
 
-        if (error) {
-            error(msg);
-        }
-    }
-
-    const xhrStatusChangeHandler = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200 || xhr.status === 304 || xhr.status === 0 /* file:// */) {
-                config = new Config(xhr);
-                success(config);
-            } else {
-                fail('[Browser][cordova.js][xhrStatusChangeHandler] Could not XHR config.xml: ' + xhr.statusText);
-            }
-        }
-    };
-
-    xhr.addEventListener('load', xhrStatusChangeHandler);
-
-    try {
-        xhr.open('get', 'config.xml', true);
-        xhr.send();
-    } catch (e) {
-        fail('[Browser][cordova.js][readConfig] Could not XHR config.xml: ' + JSON.stringify(e));
-    }
+  try {
+    xhr.open('get', 'config.xml', true);
+    xhr.send();
+  } catch (e) {
+    fail('[Browser][cordova.js][readConfig] Could not XHR config.xml: ' + JSON.stringify(e));
+  }
 }
 
 /**
  * Reads a preference value from config.xml.
  * Returns preference value or undefined if it does not exist.
  * @param {String} preferenceName Preference name to read */
-Config.prototype.getPreferenceValue = function getPreferenceValue (preferenceName) {
-    const preferenceItem = this.preferences && this.preferences.filter(function (item) {
-        return item.attributes.name && item.attributes.name.value === preferenceName;
-    });
+Config.prototype.getPreferenceValue = function getPreferenceValue(preferenceName) {
+  const preferenceItem = this.preferences && this.preferences.filter(function (item) {
+    return item.attributes.name && item.attributes.name.value === preferenceName;
+  });
 
-    if (preferenceItem && preferenceItem[0] && preferenceItem[0].attributes && preferenceItem[0].attributes.value) {
-        return preferenceItem[0].attributes.value.value;
-    }
+  if (preferenceItem && preferenceItem[0] && preferenceItem[0].attributes && preferenceItem[0].attributes.value) {
+    return preferenceItem[0].attributes.value.value;
+  }
 };
 
 exports.readConfig = readConfig;
