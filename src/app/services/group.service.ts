@@ -33,11 +33,11 @@ export class GroupService implements OnDestroy {
   private groupUsersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   groupUsers$: Observable<User[]> = this.groupUsersSubject.asObservable();
 
-  public selectedGroupSubject = new Subject<Group>();
+  selectedGroupSubject = new BehaviorSubject<Group | null>(null);
+
+  loggedUserGroupsSubject = new Subject<User>();
 
   destroy$ = new Subject<void>();
-
-  currentGroup: Group | undefined;
 
   constructor(
     private firestore: AngularFirestore,
@@ -45,15 +45,15 @@ export class GroupService implements OnDestroy {
     private router: Router
   ) {
     this.selectGroupEffect$.subscribe();
+    this.loggedUserGroups$.subscribe();
   }
 
   selectGroupEffect$ = this.selectedGroupSubject.asObservable().pipe(
     filter(p => !!p && !!p.name && p.name.length > 0),
     takeUntil(this.destroy$),
     exhaustMap(group => {
-      this.currentGroup = group;
       const users: User[] = [];
-      group.users.forEach(userId => {
+      group?.users.forEach(userId => {
         this.firestore.collection('users').doc<User>(userId).valueChanges().subscribe(user => {
           if (user) {
             users.push(user);
@@ -71,24 +71,30 @@ export class GroupService implements OnDestroy {
     })
   );
 
-  fetchUserGroups(userId: string): void {
-    console.log("Fetching Groups");
-    this.firestore
-      .collection('groups', (ref) => ref.where('users', 'array-contains', userId))
-      .snapshotChanges()
-      .pipe(
-        map((actions) =>
-          actions.map((a) => {
-            const data = a.payload.doc.data() as Group;
-            const uid = a.payload.doc.id;
-            return {uid, ...data};
-          })
-        )
-      )
-      .subscribe((groups) => {
-        this.userGroupsSubject.next(groups);
-      });
-  }
+  loggedUserGroups$ = this.loggedUserGroupsSubject.asObservable().pipe(
+    takeUntil(this.destroy$),
+    exhaustMap((user) => {
+      if (!user || !user.uid) {
+        throw new Error('User information is missing');
+      }
+      return this.firestore
+        .collection('groups', (ref) => ref.where('users', 'array-contains', user.uid))
+        .snapshotChanges()
+        .pipe(
+          map((actions) =>
+            actions.map((a) => {
+              const data = a.payload.doc.data() as Group;
+              const uid = a.payload.doc.id;
+              return {uid, ...data};
+            })
+          ),
+          tap(groups => this.userGroupsSubject.next(groups))
+        );
+    }),
+    catchError((e: Error) => {
+      throw new Error(e.message);
+    })
+  );
 
   createNewGroup(groupName: string, userId: string): Promise<Group> {
     return new Promise<Group>((resolve, reject) => {
@@ -103,7 +109,6 @@ export class GroupService implements OnDestroy {
         .add(newGroup)
         .then((docRef) => {
           newGroup.uid = docRef.id;
-          this.fetchUserGroups(userId);
           resolve(newGroup);
         })
         .catch((error) => {
@@ -133,9 +138,6 @@ export class GroupService implements OnDestroy {
       catchError(error => {
         console.error('Error in removeUserFromGroup:', error);
         return throwError(() => new Error('Error removing user from group'));
-      }),
-      tap(() => {
-        this.fetchUserGroups(this.loginService.currentLoggedUser?.uid!);
       })
     );
   }
@@ -163,10 +165,6 @@ export class GroupService implements OnDestroy {
         reject(new Error("Error fetching group"));
       });
     });
-  }
-
-  public get selectedGroup() {
-    return this.currentGroup;
   }
 
   ngOnDestroy() {

@@ -2,7 +2,6 @@ import {Component, OnDestroy} from '@angular/core';
 import {GroupService} from "../services/group.service";
 import {ProductService} from "../services/product.service";
 import {Product} from "../shared/interfaces/product";
-import {User} from "../shared/interfaces/user";
 import {LoginService} from "../services/login.service";
 import {
   BehaviorSubject,
@@ -44,8 +43,6 @@ export class GroupComponent implements OnDestroy {
   showProductForm = false;
   showModal = false;
 
-  currentUser: User | null | undefined;
-
   constructor(
     private productService: ProductService,
     private loginService: LoginService,
@@ -64,7 +61,7 @@ export class GroupComponent implements OnDestroy {
           return [];
         }
         return combineLatest(users.map(user => {
-          return this.productService.getProductsByUserAndGroup(user.uid!, this.groupService.selectedGroup?.uid!)
+          return this.productService.getProductsByUserAndGroup(user.uid!, this.groupService.selectedGroupSubject.getValue()?.uid!)
             .pipe(
               map(products => ({userId: user.uid, products})),
             );
@@ -90,7 +87,7 @@ export class GroupComponent implements OnDestroy {
       fromPromise(this.productService.addProduct({
         ...p,
         user: this.loginService.currentLoggedUser?.uid,
-        group: this.groupService.selectedGroup?.uid
+        group: this.groupService.selectedGroupSubject.getValue()?.uid
       }))
     ),
     tap(() => {
@@ -140,7 +137,7 @@ export class GroupComponent implements OnDestroy {
   leaveGroupClickButtonEffect$ = this.leaveGroupSubject.asObservable().pipe(
     takeUntil(this.destroy$),
     exhaustMap(() =>
-      this.groupService.leaveGroup(this.groupService.selectedGroup?.uid!).pipe(
+      this.groupService.leaveGroup(this.groupService.selectedGroupSubject.getValue()?.uid!).pipe(
         tap(() => {
           this.router.navigate([Constants.HOME_ROUTE]);
         }),

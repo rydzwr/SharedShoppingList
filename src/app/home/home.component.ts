@@ -28,7 +28,7 @@ export class HomeComponent implements OnDestroy {
     this.joinGroupEffect$.subscribe();
 
     this.showForm = 'NO';
-    this.groupService.fetchUserGroups(loginService.currentLoggedUser?.uid!);
+    this.groupService.loggedUserGroupsSubject.next(loginService.currentLoggedUser!);
   }
 
   createGroupEffect$ = this.createGroupSubject.asObservable().pipe(
@@ -54,7 +54,7 @@ export class HomeComponent implements OnDestroy {
       fromPromise(this.groupService.joinGroup(this.groupName, this.inviteCode))
     ),
     tap((newGroup) => {
-     this.resetFormAndHide();
+      this.resetFormAndHide();
       this.groupService.selectedGroupSubject.next(newGroup);
     }),
     catchError((e: Error) => {
