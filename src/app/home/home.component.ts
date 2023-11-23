@@ -24,6 +24,8 @@ export class HomeComponent implements OnDestroy {
     public groupService: GroupService,
     private loginService: LoginService,
   ) {
+    console.log("HomeComponent");
+
     this.createGroupEffect$.subscribe();
     this.joinGroupEffect$.subscribe();
 

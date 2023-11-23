@@ -16,6 +16,7 @@ export class ProductService {
   }
 
   getProductsByUserAndGroup(userId: string, groupId: string): Observable<Product[]> {
+    console.log("Test: -> getProductsByUserAndGroup", userId, groupId);
     return this.firestore.collection<Product>('products', ref =>
       ref.where('user', '==', userId).where('group', '==', groupId)
     ).snapshotChanges().pipe(
